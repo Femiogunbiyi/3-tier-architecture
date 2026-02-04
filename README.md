@@ -24,3 +24,6 @@ ASG(Auto Scaling Group) is simply the layer template responsible for handling th
 
 # Bastion Host
 Bastion host is a layer to connect through an SSH (Secure Shell Host). This connection is solely for the specificied IP address to securely connect to the server. It is not accessible to the public.
+
+# ALB
+Application Load Balancer (ALB) it ensures that the load is distributed and between instances and it also performs health checks on the instances.
