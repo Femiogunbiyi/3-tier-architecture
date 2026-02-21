@@ -26,8 +26,8 @@ rm -rf aws awscliv2.zip
 
 # Docker Hub Login
 if [ -n "${dockerhub_username}" ] && [ -n "${dockerhub_password}" ]; then
-echo "Logging into Docker Hub..."
-echo "${dockerhub_username}" | docker login -u "${dockerhub_password}" --password-stdin
+    echo "Logging into Docker Hub..."
+    echo "${dockerhub_username}" | docker login -u "${dockerhub_password}" --password-stdin
 
 else
 
@@ -55,39 +55,38 @@ BACKEND_PORT=$${BACKEND_PORT:-80}
 
 echo "Testing backend connectivity at $BACKEND_HOST:$BACKEND_PORT..."
 for i in {1..30}; do
-if nc -z -w 3 $BACKEND_HOST $BACKEND_PORT 2>/dev/null; then
-echo "Backend is reachable"
-break
+    if nc -z -w 3 $BACKEND_HOST $BACKEND_PORT 2>/dev/null; then
+    echo "Backend is reachable"
+    break
+    fi
 
-fi
-
-echo "Waiting for backend...($i/30)"
-sleep 10
+    echo "Waiting for backend...($i/30)"
+    sleep 10
 
 done
 
 # Run frontend container
 echo "Starting frontend container on port 3000..."
 docker run -d \
---name 3-tier-architecture-frontend \
---restart unless-stopped \
--p 3000:3000 \
--e PORT=3000 \
--e BACKEND_URL="$BACKEND_URL" \
--e NODE_ENV=production \
-${docker_image}
+    --name 3-tier-architecture-frontend \
+    --restart unless-stopped \
+    -p 3000:3000 \
+    -e PORT=3000 \
+    -e BACKEND_URL="$BACKEND_URL" \
+    -e NODE_ENV=production \
+    ${docker_image}
 
 # Verify container is running
 sleep 5
 if docker ps | grep -q 3-tier-architecture-frontend; then
-echo "Frontend container is running"
-docker logs 3-tier-architecture-frontend
+    echo "Frontend container is running"
+    docker logs 3-tier-architecture-frontend
 
 else
 
-echo "Frontend container failed to start"
-docker logs 3-tier-architecture-frontend
-exit 1
+    echo "Frontend container failed to start"
+    docker logs 3-tier-architecture-frontend
+    exit 1
 
 fi
 
